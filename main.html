@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница управления манипулятором</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .navbar {
+            width: 200px;
+            background-color: #333;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .nav-item {
+            position: relative;
+            color: #fff;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:hover {
+            background-color: #555;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background-color: #444;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            transform: translateX(-10px);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 8px 10px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown a:hover {
+            background-color: #666;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .tab-links {
+            display: flex;
+            gap: 15px;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-links a {
+            cursor: pointer;
+            color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #bbb;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .tab-links a.active {
+            background-color: #888;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-item" onmouseover="showDropdown('start')" onmouseout="hideDropdown('start')" onclick="showTabs()">Начало работы
+            <div id="start" class="dropdown">
+                <a href="#" onclick="openTab(event, 'instruction')">Обучение</a>
+                <a href="#" onclick="openTab(event, 'quick-start')">Быстрый запуск</a>
+                <a href="#" onclick="openTab(event, 'settings')">Настройки</a>
+            </div>
+        </div>
+        <div class="nav-item" onmouseover="showDropdown('control')" onmouseout="hideDropdown('control')">Управление
+            <div id="control" class="dropdown">
+                <a href="#" onclick="openTab(event, 'manual-control')">Ручное управление</a>
+                <a href="#" onclick="openTab(event, 'programming')">Программирование</a>
+                <a href="#" onclick="openTab(event, 'automatic-control')">Автоматическое управление</a>
+            </div>
+        </div>
+        <div class="nav-item" onmouseover="showDropdown('monitoring')" onmouseout="hideDropdown('monitoring')">Мониторинг
+            <div id="monitoring" class="dropdown">
+                <a href="#" onclick="openTab(event, 'status')">Статус</a>
+                <a href="#" onclick="openTab(event, 'logs')">Журнал событий</a>
+                <a href="#" onclick="openTab(event, 'data')">Данные</a>
+            </div>
+        </div>
+        <div class="nav-item" onmouseover="showDropdown('settings')" onmouseout="hideDropdown('settings')">Настройки
+            <div id="settings" class="dropdown">
+                <a href="#" onclick="openTab(event, 'user-profile')">Профиль пользователя</a>
+                <a href="#" onclick="openTab(event, 'system-settings')">Системные настройки</a>
+            </div>
+        </div>
+        <div class="nav-item" onmouseover="showDropdown('help')" onmouseout="hideDropdown('help')">Помощь
+            <div id="help" class="dropdown">
+                <a href="#" onclick="openTab(event, 'docs')">Документация</a>
+                <a href="#" onclick="openTab(event, 'support')">Контакты службы поддержки</a>
+            </div>
+        </div>
+        <div class="nav-item">Выход</div>
+    </div>
+
+    <div class="content">
+        <div id="tab-container">
+            <div id="instruction" class="tab-content">
+                <h2>Обучение</h2>
+                <p>Информация для обучения операторов.</p>
+            </div>
+            <div id="quick-start" class="tab-content">
+                <h2>Быстрый запуск</h2>
+                <p>Руководство для быстрого запуска работы с роботом.</p>
+            </div>
+            <div id="settings" class="tab-content">
+                <h2>Настройки</h2>
+                <p>Конфигурация параметров робота.</p>
+            </div>
+            <div id="manual-control" class="tab-content">
+                <h2>Ручное управление</h2>
+                <p>Функции ручного управления роботом.</p>
+            </div>
+            <div id="programming" class="tab-content">
+                <h2>Программирование</h2>
+                <p>Программирование траекторий и автоматизации.</p>
+            </div>
+            <div id="automatic-control" class="tab-content">
+                <h2>Автоматическое управление</h2>
+                <p>Режимы автоматического управления роботом.</p>
+            </div>
+            <div id="status" class="tab-content">
+                <h2>Статус</h2>
+                <p>Текущий статус робота и предупреждения.</p>
+            </div>
+            <div id="logs" class="tab-content">
+                <h2>Журнал событий</h2>
+                <p>История событий и действий.</p>
+            </div>
+            <div id="data" class="tab-content">
+                <h2>Данные</h2>
+                <p>Сводные данные о работе робота.</p>
+            </div>
+            <div id="user-profile" class="tab-content">
+                <h2>Профиль пользователя</h2>
+                <p>Настройки профиля пользователя.</p>
+            </div>
+            <div id="system-settings" class="tab-content">
+                <h2>Системные настройки</h2>
+                <p>Обновление и настройка системы.</p>
+            </div>
+            <div id="docs" class="tab-content">
+                <h2>Документация</h2>
+                <p>Документация по роботу.</p>
+            </div>
+            <div id="support" class="tab-content">
+                <h2>Контакты службы поддержки</h2>
+                <p>Номер телефона и электронная почта.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDropdown(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function hideDropdown(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openTab(event, tabId) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const tabLinks = document.querySelectorAll('.dropdown a');
+            tabLinks.forEach(link => link.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
